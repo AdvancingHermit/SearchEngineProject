@@ -1,3 +1,4 @@
+import javax.swing.plaf.InsetsUIResource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +10,39 @@ class Index1 {
     WikiItem start;
     private static String END = "---END.OF.DOCUMENT---";
 
+    private class WikiDoc {
+        String header;
+        WikiDoc next;
+
+        WikiDoc(String header, WikiDoc next){
+            this.header = header;
+            this.next = next;
+        }
+    }
+
     private class WikiItem {
         String str;
         WikiItem next;
+        WikiDoc docsIn;
 
         WikiItem(String s, WikiItem n) {
             str = s;
             next = n;
+            docsIn = null;
+        }
+
+        public Boolean Contains(WikiDoc doc){
+            WikiDoc currDoc = docsIn;
+            while (currDoc != null){
+                if (currDoc == doc) return true;
+                doc = doc.next;
+            }
+            return false;
+        }
+
+        public void AddDoc(WikiDoc doc) {
+            doc.next = docsIn;
+            docsIn = doc;
         }
     }
 
@@ -27,15 +54,27 @@ class Index1 {
             word = input.next();
             start = new WikiItem(word, null);
             current = start;
+            String doc_name = word;
+            WikiDoc doc = new WikiDoc(doc_name, null);
+            boolean take_next = false;
             while (input.hasNext()) {   // Read all words in input
+
+                take_next = word.equals(END);
                 word = input.next();
-                System.out.println(word);
-                tmp = new WikiItem(word, null);
-                if (word.toString().equals('\n')){
-                    System.out.println(word);
+                if (take_next){
+                    doc_name = word;
+                    doc = new WikiDoc(doc_name, null);
                 }
-                current.next = tmp;
-                current = tmp;
+
+                System.out.println(word);
+                tmp = GetWikiItem(word);
+                if (GetWikiItem(word) == null){
+                    tmp = new WikiItem(word, null);
+                    current.next = tmp;
+                    current = tmp;
+                }
+                tmp.AddDoc(doc);
+
             }
             input.close();
         } catch (FileNotFoundException e) {
@@ -43,23 +82,27 @@ class Index1 {
         }
     }
 
-    public List<String> search(String searchstr) {
+    public WikiItem GetWikiItem(String word){
+        WikiItem item = start;
+        while (item != null){
+            if (item.str.equals(word)) return item;
+
+            item = item.next;
+        }
+        return item;
+    }
+
+    public WikiDoc search(String searchstr) {
         WikiItem current = start;
         String doc_header = start.str;
-        List<String> headers = new ArrayList<>();
+        WikiItem headers = null;
         while (current != null) {
             if (current.str.equals(searchstr)) {
-                if (!headers.contains(doc_header)){
-                    headers.add(doc_header);
-                }
-            }
-            if (current.str.equals(END)){
-                if (current.next == null) break;
-                doc_header = current.next.str;
+                return current.docsIn;
             }
             current = current.next;
         }
-        return headers;
+        return null;
     }
 
     public static void main(String[] args) {
@@ -72,11 +115,12 @@ class Index1 {
             if (searchstr.equals("exit")) {
                 break;
             }
-            List<String> res = i.search(searchstr);
-            if (!res.isEmpty()) {
+            WikiDoc res = i.search(searchstr);
+            if (res != null) {
                 System.out.println(searchstr + " exists");
-                for (String s : res){
-                    System.out.println(s);
+                while (res != null){
+                    System.out.println(res.header);
+                    res = res.next;
                 }
             } else {
                 System.out.println(searchstr + " does not exist");
