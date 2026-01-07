@@ -58,13 +58,17 @@ class Main {
         SearchIndex4(str, i4);
     }
 
-
+    private static boolean OnlyPreprocessing = true;
     public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
         String file_name = args[0];
+        System.out.println("Started preprocessing Index1");
         Index1 i1 = new Index1(file_name);
+        System.out.println("Started preprocessing Index2");
         Index2 i2 = new Index2(file_name);
+        System.out.println("Started preprocessing Index3");
         Index3 i3 = new Index3(file_name);
+        System.out.println("Finished preprocessing");
         for (;;) {
             System.out.println("Input search string or type exit to stop");
             String searchstr = console.nextLine();
@@ -91,25 +95,26 @@ class Main {
             System.out.println("Index 2 Search Time: " + duration2);
             System.out.println("Index 3 Search Time: " + duration3);
 
-            startTime = System.nanoTime();
-            PreProcessAndSearchIndex1(file_name, searchstr);
-            endTime = System.nanoTime();
-            duration1 = (endTime - startTime)/1000000; // i milis
+            if (!OnlyPreprocessing) {
+                startTime = System.nanoTime();
+                PreProcessAndSearchIndex1(file_name, searchstr);
+                endTime = System.nanoTime();
+                duration1 = (endTime - startTime)/1000000; // i milis
 
-            startTime = System.nanoTime();
-            PreProcessAndSearchIndex2(file_name, searchstr);
-            endTime = System.nanoTime();
-            duration2 = (endTime - startTime)/1000000; // i milis
+                startTime = System.nanoTime();
+                PreProcessAndSearchIndex2(file_name, searchstr);
+                endTime = System.nanoTime();
+                duration2 = (endTime - startTime)/1000000; // i milis
 
-            startTime = System.nanoTime();
-            PreProcessAndSearchIndex3(file_name, searchstr);
-            endTime = System.nanoTime();
-            duration3 = (endTime - startTime)/1000000; // i milis
+                startTime = System.nanoTime();
+                PreProcessAndSearchIndex3(file_name, searchstr);
+                endTime = System.nanoTime();
+                duration3 = (endTime - startTime)/1000000; // i milis
 
-            System.out.println("Index 1 Preprocess and Search time: " + duration1);
-            System.out.println("Index 2 Preprocess and Search time: " + duration2);
-            System.out.println("Index 3 Preprocess and Search time: " + duration3);
-
+                System.out.println("Index 1 Preprocess and Search time: " + duration1);
+                System.out.println("Index 2 Preprocess and Search time: " + duration2);
+                System.out.println("Index 3 Preprocess and Search time: " + duration3);
+            }
         }
         console.close();
     }
