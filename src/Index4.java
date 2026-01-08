@@ -4,11 +4,10 @@ import java.util.Scanner;
 
 
 class Index4 {
-
-    WikiItem start;
     private static String END = "---END.OF.DOCUMENT---";
+    WikiItemMap map;
 
-    private class WikiDoc {
+    public class WikiDoc {
         String header;
         WikiDoc next;
 
@@ -18,15 +17,56 @@ class Index4 {
         }
     }
 
+    private class WikiItemMap {
+        private WikiItem[] Buckets;
+        private int numBuckets;
+
+        public WikiItemMap(int n){
+            numBuckets = n;
+            Buckets = new WikiItem[numBuckets];
+            for (var bucket : Buckets){
+                bucket = null;
+            }
+        }
+
+        public WikiItem Get(String s){
+            WikiItem item = Buckets[Hash(s)];
+
+            while (item != null){
+                if (item.str.equals(s)) {
+                    return item;
+                }
+                item = item.next;
+            }
+            return item;
+        }
+
+        public void Add(WikiItem new_item) {
+
+            //if (Get(new_item.str) != null) return;
+
+
+            int index = Hash(new_item.str);
+
+            new_item.next = Buckets[index];
+            Buckets[index] = new_item;
+        }
+
+        public int Hash(String s){
+            return Math.abs(s.hashCode()) % numBuckets;
+        }
+    }
+
     private class WikiItem {
         String str;
-        WikiItem next;
         WikiDoc docsIn;
+        WikiItem next;
+
 
         WikiItem(String s, WikiItem n) {
             str = s;
-            next = n;
             docsIn = null;
+            next = n;
         }
 
         public void AddDoc(WikiDoc doc) {
@@ -38,11 +78,11 @@ class Index4 {
     public Index4(String filename) {
         String word;
         WikiItem current, tmp;
+        map = new WikiItemMap(5_000_000);
         try {
             Scanner input = new Scanner(new File(filename), "UTF-8");
             word = input.next();
-            start = new WikiItem(word, null);
-            current = start;
+            current = new WikiItem(word, null);;
             String doc_name = word;
             WikiDoc doc = new WikiDoc(doc_name, null);
             boolean take_next = false;
@@ -56,11 +96,15 @@ class Index4 {
                 }
 
                 //System.out.println(word);
-                tmp = GetWikiItem(word);
-                if (GetWikiItem(word) == null){
+                tmp = map.Get(word);
+                if (tmp == null){
                     tmp = new WikiItem(word, null);
                     current.next = tmp;
                     current = tmp;
+                    map.Add(current);
+                }
+                else {
+                    int i = 1;
                 }
                 tmp.AddDoc(doc);
 
@@ -71,23 +115,10 @@ class Index4 {
         }
     }
 
-    private WikiItem GetWikiItem(String word){
-        WikiItem item = start;
-        while (item != null){
-            if (item.str.equals(word)) return item;
-
-            item = item.next;
-        }
-        return item;
-    }
-
     public WikiDoc search(String searchstr) {
-        WikiItem current = start;
-        while (current != null) {
-            if (current.str.equals(searchstr)) {
-                return current.docsIn;
-            }
-            current = current.next;
+        WikiItem item = map.Get(searchstr);
+        if (item != null) {
+            return item.docsIn;
         }
         return null;
     }
