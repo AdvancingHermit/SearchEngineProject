@@ -57,7 +57,7 @@ class Index3 {
 
                 //System.out.println(word);
                 tmp = GetWikiItem(word);
-                if (GetWikiItem(word) == null){
+                if (tmp == null){
                     tmp = new WikiItem(word, null);
                     current.next = tmp;
                     current = tmp;
