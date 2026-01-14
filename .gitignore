@@ -31,4 +31,3 @@ bin/
 .data/
 .idea/
 /data
-CMakeLists.txt
