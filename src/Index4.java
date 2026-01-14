@@ -45,6 +45,7 @@ class Index4 {
 
             //if (Get(new_item.str) != null) return;
 
+
             int index = Hash(new_item.str);
 
             new_item.next = Buckets[index];
@@ -69,15 +70,24 @@ class Index4 {
         }
 
         public void AddDoc(WikiDoc doc) {
-            doc.next = docsIn;
-            docsIn = doc;
+
+            WikiDoc docco = new WikiDoc(doc.header, null);
+            WikiDoc curr = docsIn;
+            while (curr != null){
+                if (curr.header.equals(docco.header)) {
+                    return;
+                }
+                curr = curr.next;
+            }
+            docco.next = docsIn;
+            docsIn = docco;
         }
     }
 
     public Index4(String filename) {
         String word;
         WikiItem current, tmp;
-        map = new WikiItemMap(5_000_000);
+        map = new WikiItemMap(10_000_000);
         try {
             Scanner input = new Scanner(new File(filename), "UTF-8");
             word = input.next();
@@ -85,8 +95,7 @@ class Index4 {
             String doc_name = word;
             WikiDoc doc = new WikiDoc(doc_name, null);
             boolean take_next = false;
-            while (input.hasNext()) {
-              // Read all words in input
+            while (input.hasNext()) {   // Read all words in input
 
                 take_next = word.equals(END);
                 word = input.next();
@@ -124,8 +133,9 @@ class Index4 {
     }
 
     public static void main(String[] args) {
-        System.out.println("Preprocessing " + args[0]);
-        Index4 i = new Index4(args[0]);
+        String filename = "src/data/WestburyLab.wikicorp.201004_100KB.txt";
+        System.out.println("Preprocessing " + filename);
+        Index4 i = new Index4(filename);
         Scanner console = new Scanner(System.in);
         for (;;) {
             System.out.println("Input search string or type exit to stop");
