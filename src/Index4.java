@@ -45,7 +45,6 @@ class Index4 {
 
             //if (Get(new_item.str) != null) return;
 
-
             int index = Hash(new_item.str);
 
             new_item.next = Buckets[index];
@@ -86,7 +85,8 @@ class Index4 {
             String doc_name = word;
             WikiDoc doc = new WikiDoc(doc_name, null);
             boolean take_next = false;
-            while (input.hasNext()) {   // Read all words in input
+            while (input.hasNext()) {
+              // Read all words in input
 
                 take_next = word.equals(END);
                 word = input.next();

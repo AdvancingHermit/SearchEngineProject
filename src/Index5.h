@@ -9,24 +9,26 @@ class WikiItem {
         ~WikiItem();
         WikiItem(string s, WikiItem* n);
         void addDoc(WikiItem* article);
+        string str;
+        WikiItem* next;
+        WikiItem* articles;
 
     private:
-        string str;
-        WikiItem* articles;
-        WikiItem* next;
+
+
 };
 
 class WikiItemMap {
     public:
         WikiItemMap(int n);
         ~WikiItemMap();
-        WikiItem get(string s);
+        WikiItem* get(string s);
         void add(WikiItem* new_item);
         int hash(string s);
 
     private:
         int numBuckets;
-        WikiItem* buckets;
+        WikiItem** buckets;
 };
 
 
@@ -34,7 +36,7 @@ class Index5 {
 public:
     Index5();
     void preprocess(string filename);
-    void* search(string query);
+    WikiItem* search(string query);
 private:
     WikiItemMap map;
 };
