@@ -1,4 +1,4 @@
-#include "Index5.h"
+#include "./Index5.h"
 const static string END = "---END.OF.DOCUMENT---";
 
 WikiItem::WikiItem() {

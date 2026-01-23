@@ -4,6 +4,8 @@ project(SearchEngineProject)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(SearchEngineProject
-        src/Index5.cpp
+        src/core/Index5.cpp
         src/Main.cpp
-        src/Index5.h)
+        src/core/Index5.h
+        src/core/interfaces.h
+        src/core/Index6.h)

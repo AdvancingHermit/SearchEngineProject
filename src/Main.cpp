@@ -1,10 +1,10 @@
-#include "Index5.h"
+#include "core/Index5.h"
 
 int main(int argc, char* argv[]) {
     printf("main \n");
     Index5 index5 = Index5();
     printf("Started preprocessing \n");
-    index5.preprocess("data/WestburyLab.wikicorp.201004_100MB.txt");
+    index5.preprocess("data/WestburyLab.wikicorp.201004_100KB.txt");
     printf("Finished preprocessing \n");
     printf("Start searching \n");
     WikiItem* res = index5.search("albedo");
