@@ -8,4 +8,6 @@ add_executable(SearchEngineProject
         src/Main.cpp
         src/core/Index5.h
         src/core/interfaces.h
-        src/core/Index6.h)
+        src/core/Index6.h
+        src/components/stores/BasicHashTable.cpp
+)
