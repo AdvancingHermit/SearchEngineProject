@@ -23,7 +23,6 @@ void* BasicPreprocessor::preprocess(std::string filename, IStore *store) {
     Doc document{};
     std::string word;
     short take_next = 1;
-    printf("ayoo");
 
     while (file >> word)
     {
@@ -36,8 +35,6 @@ void* BasicPreprocessor::preprocess(std::string filename, IStore *store) {
 
         take_next = word == END;
     }
-    printf("finished while loop");
     file.close();
-    printf("close");
     return nullptr;
 }
