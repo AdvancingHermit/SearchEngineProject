@@ -97,7 +97,6 @@ void test(Index* index) {
         if (count > 100000) break;
         some.push_back(it->first);
     }
-    std::cout << some[0] << std::endl;
     for (const std::string& s : some) {
         auto res = index->search(s);
         CompareResult(s, res, results.at(s));
