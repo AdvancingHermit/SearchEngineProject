@@ -1,17 +1,20 @@
 #include "core/Index5.h"
 #include "components/test/test.cpp"
 #include "components/preprocessors/BasicPreprocessor.cpp"
+#include "components/preprocessors/BasicPreprocessorHandlesPunctuation.cpp"
+
 #include "components/hashers/BasicHasher.cpp"
 #include "components/searchers/BasicSearcher.cpp"
 #include "components/stores/BasicHashTable.cpp"
 #include "components/rankers/MostMatchesRanker.cpp"
+
 /*
 */
 
 int main(int argc, char* argv[]) {
     printf("main \n");
 
-    BasicPreprocessor preprocessor;
+    BasicPreprocessorHandlesPunctuation preprocessor;
     BasicHasher hasher;
     BasicSearcher searcher;
     BasicHashTable store = BasicHashTable(300'000, &hasher);
@@ -28,15 +31,15 @@ int main(int argc, char* argv[]) {
     printf("Finished Testing \n");
 
 
-    /*
-    std:string qy = "totally";
+
+    std:string qy = "abdominal";
     printf("Start searching \n");
     std::vector<Doc> res = index.search(qy);
     printf("Finished searching \n");
     for (std::vector<Doc>::iterator it = res.begin(); it != res.end(); ++it) {
         std::cout << it->title << " "  << endl;
     }
-    */
+
 
     /*
     printf("Started Ranking \n");

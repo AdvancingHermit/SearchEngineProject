@@ -67,7 +67,7 @@ void CompareResult(std::string query, std::vector<Doc> index_res, std::vector<st
 
 
     for (int i = 0; i < benchmark_res.size(); i++) {
-        if (benchmark_res[i] == " [Pivot] ++ % Use the anonymous fun (here named 'Smaller') to test the 'Pivo.") continue;
+        if (benchmark_res[i] == " [Pivot] ++ % Use the anonymous fun (here named 'Smaller') to test the 'Pivo") continue;
         if (i >= index_res_as_strings.size()) {
             if (!std::binary_search(index_res_as_strings.begin(), index_res_as_strings.end(), benchmark_res[i])) {
                 if (std::find(index_res_as_strings.begin(), index_res_as_strings.end(), benchmark_res[i]) == index_res_as_strings.end()) {
@@ -103,6 +103,9 @@ void test(Index* index) {
         if (count > 100000) break;
         some.push_back(it->first);
     }
+
+    std::cout << count << std::endl;
+
     for (const std::string& s : some) {
         auto res = index->search(s);
         CompareResult(s, res, results.at(s));

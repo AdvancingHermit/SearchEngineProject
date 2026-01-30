@@ -32,10 +32,21 @@ class Test {
                     while (input.hasNext() && word.trim().equals("")){
                         word = input.nextLine();
                     }
+                    char last = word.charAt(word.length() - 1);
+                    if (last == ',' || last == '.' || last == '?'){
+                        word = word.substring(0, word.length() - 1);
+                    }
                     document = word;
                 } else {
                     word = input.next();
+                    char last = word.charAt(word.length() - 1);
+                    if (last == ',' || last == '.' || last == '?'){
+                        word = word.substring(0, word.length() - 1);
+                    }
                 }
+
+
+
                 if (holder.containsKey(word)) {
                     var list = holder.get(word);
                     if (!list.get(list.size() - 1).equals(document)){
