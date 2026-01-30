@@ -13,11 +13,12 @@ std::map<std::string, std::vector<std::string>> load_test() {
 
     std::map<std::string, std::vector<std::string>> results = std::map<std::string, std::vector<std::string>>{};
 
-    std::string filename = "src/components/test/test_100MB.txt";
+    std::string filename = "";//"src/components/test/test_100MB.txt";
     std::ifstream file;
     file.open (filename);
     if (!file.good()) {
-        printf("Error reading file");
+        printf("Error reading file\n");
+        printf("Du mangler nok at køre java fil. Prøv:\njava src/extras/java/Test.java\n");
         return results;
     }
     if (!file.is_open()) {

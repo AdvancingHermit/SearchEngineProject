@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 
 
     /*
-    std:string qy = "cm";
+    std:string qy = "totally";
     printf("Start searching \n");
     std::vector<Doc> res = index.search(qy);
     printf("Finished searching \n");
