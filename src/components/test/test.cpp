@@ -71,9 +71,11 @@ void CompareResult(std::string query, std::vector<Doc> index_res, std::vector<st
             printf("Seems to be missing %s on %s", benchmark_res[i].c_str(), query.c_str());
             break;
         }
+
         if (benchmark_res[i] != index_res_as_strings[i]) {
-            std::cout << index_res_as_strings[i].c_str() << std::endl;
-            printf("On Query %s\nWas supposed to get %s but got %s instead\n", query.c_str(), benchmark_res[i].c_str(), index_res_as_strings[i].c_str());
+            if (std::find(index_res_as_strings.begin(), index_res_as_strings.end(), benchmark_res[i]) == index_res_as_strings.end()) {
+                printf("On Query %s\nWas supposed to have %s\n", query.c_str(), benchmark_res[i].c_str());
+            }
         }
     }
 }
@@ -87,21 +89,14 @@ void test(Index* index) {
     for (std::map<std::string, std::vector<std::string>>::iterator it = results.begin(); it != results.end(); ++it) {
         if (it->first.empty()) continue;
         if (std::regex_search(it->first, re)) continue;
+        if (it->first.length() < 2) continue;
         count++;
-        if (count > 200) break;
-
-        std::cout << it->first.c_str() << std::endl;
+        if (count > 1000) break;
         some_200.push_back(it->first);
     }
-    printf("Made it here4 \n");
     std::cout << some_200[0] << std::endl;
-    printf("Made it here5 \n");
     for (const std::string& s : some_200) {
-        std::cout << "waddup" << std::endl;
         auto res = index->search(s);
-        std::cout << "sup " << res[0].title << std::endl;
         CompareResult(s, res, results.at(s));
     }
-
-    printf("Made it here4 \n");
 }
