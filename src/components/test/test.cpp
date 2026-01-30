@@ -7,6 +7,7 @@
 #include <sstream>
 #include <regex>
 
+//Kræver man også kører Test.java for at producere txt fil
 
 std::map<std::string, std::vector<std::string>> load_test() {
 
