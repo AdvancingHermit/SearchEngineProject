@@ -31,3 +31,7 @@ bin/
 .data/
 .idea/
 /data
+
+/cmake-build-debug
+src/components/test/test_100MB.txt
+test.txt
