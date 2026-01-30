@@ -88,7 +88,7 @@ void test(Index* index) {
     std::map<std::string, std::vector<std::string>> results = load_test();
     std::vector<std::string> some = std::vector<std::string>{};
     int count = 0;
-    std::regex re(R"([0-9A-Z\"\(\)\$'\,#\;:\-\.\/!\*\?\<┬\+&\%=\>\@╬\[\]\\\^\_\`\├ù\ÕÓ\┘\▒Ç\©Î])");
+    std::regex re(R"([0-9A-Z\"\(\)\$'\,#\;:\-\.\/!\*\?\<┬\+&\%=\>\@╬\[\]\\\^\_\`\├ù\Õ\Ó\┘\▒\Ç\©\Î\ê])");
     for (std::map<std::string, std::vector<std::string>>::iterator it = results.begin(); it != results.end(); ++it) {
         if (it->first.empty()) continue;
         if (std::regex_search(it->first, re)) continue;
