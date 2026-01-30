@@ -8,5 +8,7 @@ public:
 };
 
 std::vector<Doc> BasicSearcher::search(std::string q, IStore *store) {
-    return *store->get(q);
+    if (!store) return {};
+    std::vector<Doc>* docs = store->get(q);
+    return docs == nullptr ? std::vector<Doc>{} : *docs;
 }
