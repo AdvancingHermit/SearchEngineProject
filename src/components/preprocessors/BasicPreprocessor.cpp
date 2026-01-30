@@ -1,4 +1,5 @@
 #include "../../core/interfaces.h"
+
 #include <fstream>
 
 class BasicPreprocessor : public IPreprocessor {
@@ -28,7 +29,7 @@ void* BasicPreprocessor::preprocess(std::string filename, IStore *store) {
     {
         if (take_next) {
             document.title = word;
-            document.loc = file.tellg();
+            document.start_loc = file.tellg();
         }
 
         store->add(word, document);

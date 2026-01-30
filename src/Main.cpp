@@ -4,6 +4,7 @@
 #include "components/hashers/BasicHasher.cpp"
 #include "components/searchers/BasicSearcher.cpp"
 #include "components/stores/BasicHashTable.cpp"
+#include "components/rankers/MostMatchesRanker.cpp"
 /*
 */
 
@@ -12,24 +13,33 @@ int main(int argc, char* argv[]) {
 
     BasicPreprocessor preprocessor;
     BasicHasher hasher;
-    BasicSearcher searcher = {};
+    BasicSearcher searcher;
     BasicHashTable store = BasicHashTable(300'000, &hasher);
-    Index index = Index(&store, &preprocessor, &hasher, &searcher, nullptr);
+    MostMatchesRanker MMRanker;
+    Index index = Index(&store, &preprocessor, &hasher, &searcher, &MMRanker);
 
     printf("Started preprocessing \n");
-    index.preprocess("data/WestburyLab.wikicorp.201004_100MB.txt");
+    std::string filename = "data/WestburyLab.wikicorp.201004_5MB.txt";
+    index.preprocess(filename);
 
 
     printf("Finished preprocessing \n");
-    printf("Start searching \n");
-    std::vector<Doc> res = index.search("albedo");
 
-    for (std::vector<Doc>::iterator it = res.begin(); it != res.end(); it++) {
-        std::cout << it->title << " " << it->loc << endl;
+    std:string qy = "q11111";
+    printf("Start searching \n");
+    std::vector<Doc> res = index.search(qy);
+    printf("Finished searching \n");
+    for (std::vector<Doc>::iterator it = res.begin(); it != res.end(); ++it) {
+        std::cout << it->title << " "  << endl;
     }
 
+    printf("Started Ranking \n");
+    std::vector<ScoredDoc> res_scored = index.rank(res, qy, filename);
+    printf("Finished Ranking \n");
+    for (std::vector<ScoredDoc>::iterator it = res_scored.begin(); it != res_scored.end(); it++) {
+        std::cout << it->title << " " << it->score << endl;
+    }
 
-    printf("Finished Searching \n");
 
 
     return 0;

@@ -8,7 +8,7 @@ const static std::string END = "---END.OF.DOCUMENT---";
 class Doc {
 public:
     std::string title;
-    long long loc;
+    long long start_loc;
 };
 class ScoredDoc : public Doc {
 public:
@@ -43,7 +43,9 @@ public:
 class IRanker {
 public:
     virtual ~IRanker() = default;
-    virtual std::vector<ScoredDoc> rank(const std::vector<Doc>* candidates, std::string query) = 0;
+    virtual std::vector<ScoredDoc> rank(const std::vector<Doc>& candidates,
+                                        std::string& query, IStore* store,
+                                        std::string& filename) = 0;
 };
 
 class Index {
@@ -70,4 +72,7 @@ public:
     std::vector<Doc> search(std::string q) {
         return searcher->search(q, this->store);
     }
+    std::vector<ScoredDoc> rank(std::vector<Doc>& docs, std::string& q, std::string& fn) {
+        return ranker->rank(docs, q, this->store, fn);
+    };
 };

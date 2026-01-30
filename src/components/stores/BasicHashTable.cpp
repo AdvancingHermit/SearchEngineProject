@@ -19,7 +19,7 @@ private:
     IHash* hash_function;
     Word* get_word(std::string word);
 public:
-    ~BasicHashTable() override = default;
+    ~BasicHashTable() override;
     BasicHashTable(int n, IHash* hash_function);
     void add(std::string word, Doc document) override;
     std::vector<Doc>* get(std::string word) override;
@@ -28,7 +28,22 @@ public:
 BasicHashTable::BasicHashTable(int n, IHash* hash_function) {
     numBuckets = n;
     buckets = new Word*[n];
+    for (int i = 0; i < numBuckets; ++i) buckets[i] = nullptr;
     this->hash_function = hash_function;
+}
+
+BasicHashTable::~BasicHashTable() {
+    if (!buckets) return;
+    for (int i = 0; i < numBuckets; ++i) {
+        Word* cur = buckets[i];
+        while (cur) {
+            Word* next = cur->next;
+            delete cur;
+            cur = next;
+        }
+    }
+    delete [] buckets;
+    buckets = nullptr;
 }
 
 Word *BasicHashTable::get_word(std::string word) {
@@ -64,6 +79,6 @@ void BasicHashTable::add(const std::string word, const Doc document) {
 
 std::vector<Doc> *BasicHashTable::get(std::string word) {
     Word* result = get_word(word);
-    return  &result->documents_in;
+    return  result ? &result->documents_in : nullptr;
 }
 
