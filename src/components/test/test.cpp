@@ -13,7 +13,7 @@ std::map<std::string, std::vector<std::string>> load_test() {
 
     std::map<std::string, std::vector<std::string>> results = std::map<std::string, std::vector<std::string>>{};
 
-    std::string filename = "";//"src/components/test/test_100MB.txt";
+    std::string filename = "src/components/test/test_100MB.txt";
     std::ifstream file;
     file.open (filename);
     if (!file.good()) {
