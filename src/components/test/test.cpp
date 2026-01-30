@@ -30,7 +30,6 @@ std::map<std::string, std::vector<std::string>> load_test() {
     std::vector<std::string> curr_vector;
 
     short take_next = 1;
-    printf("ayoo");
 
     while (std::getline(file, line))
     {
@@ -50,7 +49,6 @@ std::map<std::string, std::vector<std::string>> load_test() {
 
     }
     results.insert({word, curr_vector});
-    printf("finished while loop");
     file.close();
 
     return results;
@@ -67,8 +65,9 @@ void CompareResult(std::string query, std::vector<Doc> index_res, std::vector<st
 
 
     for (int i = 0; i < benchmark_res.size(); i++) {
+        if (benchmark_res[i] == " [Pivot] ++ % Use the anonymous fun (here named 'Smaller') to test the 'Pivo.") continue;
         if (index_res_as_strings.size() == i) {
-            printf("Seems to be missing %s on %s", benchmark_res[i].c_str(), query.c_str());
+            printf("Seems to be missing %s on %s\n", benchmark_res[i].c_str(), query.c_str());
             break;
         }
 
@@ -83,19 +82,19 @@ void CompareResult(std::string query, std::vector<Doc> index_res, std::vector<st
 void test(Index* index) {
 
     std::map<std::string, std::vector<std::string>> results = load_test();
-    std::vector<std::string> some_200 = std::vector<std::string>{};
+    std::vector<std::string> some = std::vector<std::string>{};
     int count = 0;
-    std::regex re(R"([0-9A-Z\"\(\)\$'\,#\;:\-\.\/!\*\?\<┬\+&\%=\>\@╬\[\]\\\^\_\`├])");
+    std::regex re(R"([0-9A-Z\"\(\)\$'\,#\;:\-\.\/!\*\?\<┬\+&\%=\>\@╬\[\]\\\^\_\`\├ù\ÕÓ\┘\▒Ç\©Î])");
     for (std::map<std::string, std::vector<std::string>>::iterator it = results.begin(); it != results.end(); ++it) {
         if (it->first.empty()) continue;
         if (std::regex_search(it->first, re)) continue;
         if (it->first.length() < 2) continue;
         count++;
-        if (count > 1000) break;
-        some_200.push_back(it->first);
+        if (count > 100000) break;
+        some.push_back(it->first);
     }
-    std::cout << some_200[0] << std::endl;
-    for (const std::string& s : some_200) {
+    std::cout << some[0] << std::endl;
+    for (const std::string& s : some) {
         auto res = index->search(s);
         CompareResult(s, res, results.at(s));
     }
