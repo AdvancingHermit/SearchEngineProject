@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
     printf("Finished preprocessing \n");
 
-    std:string qy = "q11111";
+    std:string qy = "the";
     printf("Start searching \n");
     std::vector<Doc> res = index.search(qy);
     printf("Finished searching \n");

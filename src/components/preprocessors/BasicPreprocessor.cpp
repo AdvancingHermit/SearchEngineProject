@@ -23,17 +23,24 @@ void* BasicPreprocessor::preprocess(std::string filename, IStore *store) {
     Doc document{};
     std::string word;
     short take_next = 1;
+    long long before_first_word = file.tellg();
 
     while (file >> word)
     {
         if (take_next) {
-            document.title = word;
-            document.start_loc = file.tellg();
+            long long after_first_word = file.tellg();
+            std::string rest;
+            std::getline(file, rest);
+            document.title = word.append(rest);
+            document.start_loc = before_first_word;
+            file.seekg(after_first_word);
         }
 
         store->add(word, document);
 
-        take_next = word == END;
+        if ((take_next = word == END)) {
+            before_first_word = file.tellg();
+        }
     }
     file.close();
     return nullptr;
