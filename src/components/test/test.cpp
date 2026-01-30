@@ -66,14 +66,18 @@ void CompareResult(std::string query, std::vector<Doc> index_res, std::vector<st
 
     for (int i = 0; i < benchmark_res.size(); i++) {
         if (benchmark_res[i] == " [Pivot] ++ % Use the anonymous fun (here named 'Smaller') to test the 'Pivo.") continue;
-        if (index_res_as_strings.size() == i) {
-            printf("Seems to be missing %s on %s\n", benchmark_res[i].c_str(), query.c_str());
-            break;
+        if (i >= index_res_as_strings.size()) {
+            if (std::find(index_res_as_strings.begin(), index_res_as_strings.end(), benchmark_res[i]) == index_res_as_strings.end()) {
+                printf("On Query %s\nWas supposed to have ", query.c_str());
+                std::cout << benchmark_res[i] << std::endl;
+            }
+            continue;
         }
 
         if (benchmark_res[i] != index_res_as_strings[i]) {
             if (std::find(index_res_as_strings.begin(), index_res_as_strings.end(), benchmark_res[i]) == index_res_as_strings.end()) {
-                printf("On Query %s\nWas supposed to have %s\n", query.c_str(), benchmark_res[i].c_str());
+                printf("On Query %s\nWas supposed to have ", query.c_str());
+                std::cout << benchmark_res[i] << std::endl;
             }
         }
     }

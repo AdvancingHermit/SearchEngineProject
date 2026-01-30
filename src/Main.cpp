@@ -27,8 +27,9 @@ int main(int argc, char* argv[]) {
     test(&index);
     printf("Finished Testing \n");
 
+
     /*
-    std:string qy = "above";
+    std:string qy = "cm";
     printf("Start searching \n");
     std::vector<Doc> res = index.search(qy);
     printf("Finished searching \n");
