@@ -105,9 +105,10 @@ void test(Index* index) {
     }
 
     std::cout << count << std::endl;
-
+    SearchQuery tmp;
     for (const std::string& s : some) {
-        auto res = index->search(s);
+        tmp.q = s;
+        auto res = index->search(tmp);
         CompareResult(s, res, results.at(s));
     }
 }
