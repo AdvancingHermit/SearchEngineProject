@@ -15,6 +15,20 @@ public:
     int score{};
 };
 
+enum class boolOperator {
+    a,
+    o,
+    };
+
+class SearchQuery {
+public:
+    std::string q;
+    std::vector<std::string> queries;
+    boolOperator mode;
+};
+
+
+
 class IStore {
 public:
     virtual ~IStore() = default;
@@ -37,7 +51,7 @@ public:
 class ISearcher {
 public:
     virtual ~ISearcher() = default;
-    virtual std::vector<Doc> search(std::string q, IStore* store) = 0;
+    virtual std::vector<Doc> search(SearchQuery q, IStore* store) = 0;
 };
 
 class IRanker {
@@ -69,7 +83,7 @@ public:
         preprocessor->preprocess(filename, this->store);
     }
 
-    std::vector<Doc> search(std::string q) {
+    std::vector<Doc> search(SearchQuery q) {
         return searcher->search(q, this->store);
     }
     std::vector<ScoredDoc> rank(std::vector<Doc>& docs, std::string& q, std::string& fn) {
