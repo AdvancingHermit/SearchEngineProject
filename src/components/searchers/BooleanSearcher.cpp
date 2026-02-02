@@ -65,17 +65,12 @@ std::vector<Doc> BooleanSearcher::search(SearchQuery q, IStore* store) {
     }
 
     std::vector<Doc> res = allDocs.back();
-
     allDocs.pop_back();
-
-
     std::unordered_set<std::string> resSet = createDocSet(&res);
 
     for (auto doc : allDocs) {
         q.mode == boolOperator::a ? Intersection(&res, &doc, &resSet) : Union(&res,&doc, &resSet);
     }
 
-
-
-    return res.empty() ? std::vector<Doc>{} : res;
+    return res;
 }
