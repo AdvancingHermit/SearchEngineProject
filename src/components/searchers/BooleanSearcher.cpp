@@ -25,14 +25,14 @@ void BooleanSearcher::Intersection(std::vector<Doc>* main, std::vector<Doc>* v, 
     std::unordered_set<std::string> vSet = createDocSet(v);
     std::unordered_set<std::string> resultSet;
     for (auto& docName : *mainSet) {
-        if (vSet.find(docName) != vSet.end()) { // element found (contained in both)
+        if (vSet.contains(docName)) { 
             resultSet.insert(docName);
         }
     }
     *mainSet = resultSet;
     std::vector<Doc> resultsDoc;
     for (Doc& doc : *main) {
-        if (resultSet.find(doc.title) != resultSet.end()) { // element found (contained in both)
+        if (resultSet.find(doc.title) != resultSet.end()) {
             resultsDoc.push_back(doc);
         }
     *main = resultsDoc;
@@ -42,7 +42,7 @@ void BooleanSearcher::Intersection(std::vector<Doc>* main, std::vector<Doc>* v, 
 }
 void BooleanSearcher::Union(std::vector<Doc>* main, std::vector<Doc>* v, std::unordered_set<std::string>* mainSet) {
     for (Doc& doc : *v) {
-        if (mainSet->find(doc.title) == mainSet->end()) { //element not found
+        if (!mainSet->contains(doc.title)) {
             main->push_back(doc);
             mainSet->insert(doc.title);
         }
