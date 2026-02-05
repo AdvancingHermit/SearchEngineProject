@@ -24,7 +24,7 @@ class SearchQuery {
 public:
     std::string q;
     std::vector<std::string> queries;
-    boolOperator mode;
+    std::vector<boolOperator> mode;
 };
 
 

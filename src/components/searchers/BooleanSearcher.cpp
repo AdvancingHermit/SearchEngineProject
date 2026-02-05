@@ -1,6 +1,7 @@
 #include "../../core/interfaces.h"
 #include <unordered_set>
 
+
 class BooleanSearcher : public ISearcher {
 private:
     void Intersection(std::vector<Doc>* main, std::vector<Doc>* v, std::unordered_set<std::string>* mainSet);
@@ -25,7 +26,7 @@ void BooleanSearcher::Intersection(std::vector<Doc>* main, std::vector<Doc>* v, 
     std::unordered_set<std::string> vSet = createDocSet(v);
     std::unordered_set<std::string> resultSet;
     for (auto& docName : *mainSet) {
-        if (vSet.contains(docName)) { 
+        if (vSet.contains(docName)) {
             resultSet.insert(docName);
         }
     }
@@ -55,21 +56,32 @@ void BooleanSearcher::Union(std::vector<Doc>* main, std::vector<Doc>* v, std::un
 
 std::vector<Doc> BooleanSearcher::search(SearchQuery q, IStore* store) {
     if (!store) return {};
+    if (!(q.queries.size()-1 <= q.mode.size())) {
+        throw std::invalid_argument("Size of mode is too small for query size. Queries size = " +
+           std::to_string(q.queries.size()) + ", Mode size = " + std::to_string(q.mode.size()));
+    }
+
+
     printf("%lu",q.queries.size());
     std::vector<std::vector<Doc>> allDocs;
     for (auto& qu : q.queries) {
-        std::vector<Doc>* tmp = store->get(qu);
-        if (tmp) {
+        if (std::vector<Doc>* tmp = store->get(qu)) {
             allDocs.push_back(*tmp);
         }
     }
 
-    std::vector<Doc> res = allDocs.back();
-    allDocs.pop_back();
-    std::unordered_set<std::string> resSet = createDocSet(&res);
-
+    std::vector<Doc> res;
+    std::unordered_set<std::string> resSet;
+    int counter = -1;
     for (auto& doc : allDocs) {
-        q.mode == boolOperator::a ? Intersection(&res, &doc, &resSet) : Union(&res,&doc, &resSet);
+        if (counter == -1) {
+            res = doc;
+            resSet = createDocSet(&res);
+            counter++;
+            continue;
+        }
+        q.mode[counter] == boolOperator::a ? Intersection(&res, &doc, &resSet) : Union(&res,&doc, &resSet);
+        counter++;
     }
 
     return res;
