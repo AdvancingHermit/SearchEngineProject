@@ -80,7 +80,7 @@ std::vector<Doc> BooleanSearcher::search(SearchQuery q, IStore* store) {
             counter++;
             continue;
         }
-        q.mode[counter] == boolOperator::a ? Intersection(&res, &doc, &resSet) : Union(&res,&doc, &resSet);
+        q.mode[counter] == boolOperator::_and ? Intersection(&res, &doc, &resSet) : Union(&res,&doc, &resSet);
         counter++;
     }
 

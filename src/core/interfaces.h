@@ -16,8 +16,8 @@ public:
 };
 
 enum class boolOperator {
-    a,
-    o,
+    _and,
+    _or,
     };
 
 class SearchQuery {
