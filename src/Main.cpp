@@ -5,6 +5,7 @@
 
 #include "components/hashers/BasicHasher.cpp"
 #include "components/searchers/BasicSearcher.cpp"
+#include "components/searchers/BooleanSearcher.cpp"
 #include "components/stores/BasicHashTable.cpp"
 #include "components/rankers/MostMatchesRanker.cpp"
 
@@ -16,25 +17,39 @@ int main(int argc, char* argv[]) {
 
     BasicPreprocessorHandlesPunctuation preprocessor;
     BasicHasher hasher;
-    BasicSearcher searcher;
+    BooleanSearcher searcher;
     BasicHashTable store = BasicHashTable(300'000, &hasher);
     MostMatchesRanker MMRanker;
     Index index = Index(&store, &preprocessor, &hasher, &searcher, &MMRanker);
 
     printf("Started preprocessing \n");
-    std::string filename = "data/WestburyLab.wikicorp.201004_100MB.txt";
+    std::string filename = "data/WestburyLab.wikicorp.201004_10MB.txt";
     index.preprocess(filename);
     printf("Finished preprocessing \n");
 
-    printf("Started Testing \n");
-    test(&index);
-    printf("Finished Testing \n");
+// printf("Started Testing \n");
+  //  test(&index);
+   // printf("Finished Testing \n");
 
 
 
-    std:string qy = "abdominal";
+  //  std:string qy = "abdominal";
     printf("Start searching \n");
-    std::vector<Doc> res = index.search(qy);
+    SearchQuery q;
+    std::vector<std::string> words;
+    words.push_back("hiking");
+    words.push_back("jumping");
+    words.push_back("fishing");
+    words.push_back("swimming");
+    q.queries = words;
+    std::vector<boolOperator> operations;
+    operations.push_back(boolOperator::_or);
+    operations.push_back(boolOperator::_or);
+    operations.push_back(boolOperator::_or);
+
+    q.mode = operations;
+
+    std::vector<Doc> res = index.search(q);
     printf("Finished searching \n");
     for (std::vector<Doc>::iterator it = res.begin(); it != res.end(); ++it) {
         std::cout << it->title << " "  << endl;
