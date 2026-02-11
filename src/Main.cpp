@@ -7,6 +7,7 @@
 #include "components/searchers/BasicSearcher.cpp"
 #include "components/searchers/BooleanSearcher.cpp"
 #include "components/stores/BasicHashTable.cpp"
+#include "components/stores/LinearProbingTable.cpp"
 #include "components/rankers/MostMatchesRanker.cpp"
 
 /*
@@ -19,10 +20,13 @@ int main(int argc, char* argv[]) {
     BasicHasher hasher;
     BooleanSearcher searcher;
     BasicHashTable store = BasicHashTable(300'000, &hasher);
+    LinearProbingTable store2 = LinearProbingTable(600'000, &hasher);
+
     MostMatchesRanker MMRanker;
     Index index = Index(&store, &preprocessor, &hasher, &searcher, &MMRanker);
 
     printf("Started preprocessing \n");
+
     std::string filename = "data/WestburyLab.wikicorp.201004_10MB.txt";
     index.preprocess(filename);
     printf("Finished preprocessing \n");

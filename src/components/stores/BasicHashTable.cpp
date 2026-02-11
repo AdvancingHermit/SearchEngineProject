@@ -70,6 +70,7 @@ void BasicHashTable::add(const std::string word, const Doc document) {
     }
 
     if (!word_in_document->documents_in.empty()) {
+        //return if trying to add the same document again
         if (word_in_document->documents_in[word_in_document->documents_in.size() - 1].title == document.title) {
             return;
         }
